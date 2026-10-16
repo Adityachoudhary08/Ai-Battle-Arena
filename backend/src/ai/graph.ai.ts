@@ -26,29 +26,44 @@ function updateLeaderboard(result: BattleResult) {
     const s1 = result.judge.solution_1_score;
     const s2 = result.judge.solution_2_score;
 
+    // Ensure both leaderboard entries exist.
     for (const id of [model1_id, model2_id]) {
         if (!leaderboard[id]) {
-            leaderboard[id] = { wins: 0, losses: 0, draws: 0, totalScore: 0, battles: 0 };
+            leaderboard[id] = {
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                totalScore: 0,
+                battles: 0,
+            };
         }
     }
 
-    leaderboard[model1_id].totalScore += s1;
-    leaderboard[model1_id].battles += 1;
-    leaderboard[model2_id].totalScore += s2;
-    leaderboard[model2_id].battles += 1;
+    // Store references so TypeScript can safely track the entries.
+    const model1 = leaderboard[model1_id];
+    const model2 = leaderboard[model2_id];
+
+    if (!model1 || !model2) {
+        throw new Error("Failed to initialize leaderboard entries");
+    }
+
+    model1.totalScore += s1;
+    model1.battles += 1;
+
+    model2.totalScore += s2;
+    model2.battles += 1;
 
     if (s1 > s2) {
-        leaderboard[model1_id].wins += 1;
-        leaderboard[model2_id].losses += 1;
+        model1.wins += 1;
+        model2.losses += 1;
     } else if (s2 > s1) {
-        leaderboard[model2_id].wins += 1;
-        leaderboard[model1_id].losses += 1;
+        model2.wins += 1;
+        model1.losses += 1;
     } else {
-        leaderboard[model1_id].draws += 1;
-        leaderboard[model2_id].draws += 1;
+        model1.draws += 1;
+        model2.draws += 1;
     }
 }
-
 export function getHistory() {
     return battleHistory;
 }
