@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
-const API_URL = 'http://localhost:3000';
+import { API_URL } from '../config/api';
 
 export default function AuthModal({ mode, onModeChange, onAuthenticated, onClose }) {
   const [email, setEmail] = useState('');

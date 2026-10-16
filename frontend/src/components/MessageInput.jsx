@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ChatHistory from './ChatHistory';
 import ModelSelector from './ModelSelector';
 import axios from "axios";
+import { API_URL } from '../config/api';
 
 export default function ChatInterface({ models, selectedModel1, selectedModel2, onModel1Change, onModel2Change, onBattleComplete }) {
   const [messages, setMessages] = useState([]);
@@ -39,7 +40,7 @@ export default function ChatInterface({ models, selectedModel1, selectedModel2, 
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:3000/invoke", {
+      const response = await axios.post(`${API_URL}/invoke`, {
         input: currentInput,
         model1: selectedModel1,
         model2: selectedModel2,

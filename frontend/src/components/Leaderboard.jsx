@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 
 export default function Leaderboard({ token }) {
   const [data, setData] = useState([]);
@@ -8,7 +9,7 @@ export default function Leaderboard({ token }) {
 
   const fetchLeaderboard = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:3000/leaderboard", {
+      const res = await axios.get(`${API_URL}/leaderboard`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data.leaderboard || []);

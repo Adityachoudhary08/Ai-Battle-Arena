@@ -8,7 +8,21 @@ import { randomBytes, randomUUID, scryptSync, timingSafeEqual } from "node:crypt
 const app = express();
 app.use(express.json())
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: (origin, callback) => {
+        const configuredOrigins = (process.env.FRONTEND_URL || "")
+            .split(",")
+            .map((value) => value.trim())
+            .filter(Boolean);
+        const isLocalOrigin = origin === "http://localhost:5173" || origin === "http://localhost:5174";
+        const isVercelOrigin = Boolean(origin && /^https:\/\/[a-z0-9-]+(?:-[a-z0-9]+)?\.vercel\.app$/i.test(origin));
+
+        if (!origin || isLocalOrigin || isVercelOrigin || configuredOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+        }
+
+        callback(new Error("Origin is not allowed by CORS"));
+    },
     methods: ["GET", "POST"],
     credentials: true
 }))

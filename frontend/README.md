@@ -1,4 +1,16 @@
-# React + Vite
+# AI Battle Arena frontend
+
+## Deployment
+
+The frontend uses the deployed backend at:
+
+`https://ai-battle-arena-2-kvku.onrender.com`
+
+For a different backend, set the Vercel environment variable `VITE_API_URL` to the backend URL, then redeploy. The value is used for the models, authentication, battle, history, and leaderboard requests.
+
+The backend accepts localhost origins, Vercel deployment origins, and any comma-separated origins configured through its `FRONTEND_URL` environment variable.
+
+## Development
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

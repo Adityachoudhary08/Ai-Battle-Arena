@@ -5,6 +5,7 @@ import Leaderboard from '../components/Leaderboard';
 import BattleMessage from '../components/BattleMessage';
 import AuthModal from '../components/AuthModal';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 
 const SESSION_STORAGE_KEY = 'duelbench-auth-session';
 
@@ -25,7 +26,7 @@ export default function App() {
   useEffect(() => {
     const fetchModels = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/models");
+        const res = await axios.get(`${API_URL}/models`);
         const m = res.data.models || [];
         setModels(m);
         if (m.length >= 2) {
@@ -46,7 +47,7 @@ export default function App() {
   const fetchHistory = useCallback(async (token = session?.token) => {
     if (!token) return;
     try {
-      const res = await axios.get("http://localhost:3000/history", {
+      const res = await axios.get(`${API_URL}/history`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setHistory(res.data.history || []);
